@@ -4,23 +4,24 @@
 using namespace std;
 
 // } Driver Code Ends
+
+#include <cmath>
 class Solution
 {
 	public:
-	long long int sum = 0;
-	    void rev(long long int n)
+	
+	    long long int reverse(long long int n, int digits)
 	    {
-	        if(n==0)
-	            return;
-	       
-	        int rem = n%10;
-	        sum = sum*10 + rem;
-	        rev(n/10);
+	        if(n%10 == n)
+	            return n;
+	            
+	        return (n%10) * pow(10, digits-1) + reverse(n/10, digits-1);
 	    }
+	
 		long long int reverse_digit(long long int n)
 		{
-		    rev(n);
-		    return sum;
+		    int digits = (int)(log10(n)+1);
+		    return reverse(n, digits);
 		}
 };
 
