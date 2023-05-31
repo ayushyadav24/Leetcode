@@ -9,14 +9,17 @@ using namespace std;
 
 class Solution {
   public:
+    bool Sort(int arr[], int index, int n)
+    {
+        // base condition
+        if(index == n-1)
+            return true;
+            
+        return arr[index] <= arr[index + 1] && Sort(arr, index+1, n);
+    }
     bool arraySortedOrNot(int arr[], int n) {
         // code here
-        for(int i=1; i<n; i++)
-        {
-            if(arr[i-1] > arr[i])
-                return false;
-        }
-        return true;
+        return Sort(arr, 0, n);
     }
 };
 
