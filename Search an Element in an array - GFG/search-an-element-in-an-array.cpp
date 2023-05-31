@@ -11,12 +11,13 @@ class Solution{
     // X: element to be searched for
     int linearSearch(int arr[], int n, int target, int i)
     {
-         if(arr[i] == target)
+        // base condition
+        if(i == n)
+            return -1;
+            
+        if(arr[i] == target)
             return i;
             
-        // base condition
-        if(i == n-1)
-            return -1;
         return linearSearch(arr, n, target, i+1);
     }
     int search(int arr[], int N, int X)
