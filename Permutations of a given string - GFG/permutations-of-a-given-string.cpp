@@ -6,35 +6,33 @@ using namespace std;
 class Solution
 {
 	public:
-	    vector<string> permutationRet(string ans, string input, int start, int end)
+	vector<string> permutation(string ans, string input)
+	{
+	    if(input.empty())
 	    {
-	       unordered_set<string>unique;
-	        if(input.empty())
-            {
-                vector<string>temp;
-                temp.push_back(ans);
-                return temp;
-            }
-            char ch = input[0];
-        
-            for (int i = start; i <= end; i++)
-            {
-                string f = ans.substr(0, i);
-                string e = ans.substr(i, ans.length()-i);
-                vector<string> sub = permutationRet(f+ch+e, input.substr(1), start, end+1);
-                for(auto str : sub)
-                {
-                    unique.insert(str);
-                }
-            }
-               vector<string>res(unique.begin(), unique.end());
-               return res;
+	        vector<string>temp;
+	        temp.push_back(ans);
+	        return temp;
 	    }
-	    
+	    unordered_set<string>unique;
+	    char ch=input[0];
+	    for(int i=0; i<= ans.length(); i++)
+	    {
+	        string f = ans.substr(0, i);
+	        string e = ans.substr(i, ans.length()-i);
+	        vector<string> sub = permutation(f+ch+e, input.substr(1));
+	        
+	        for(string str : sub)
+	        {
+	            unique.insert(str);
+	        }
+	    }
+	    vector<string>res(unique.begin(), unique.end());
+	    return res;
+	}
 		vector<string>find_permutation(string S)
 		{
-		    // Code here there
-		    vector<string>ans = permutationRet("", S, 0, 0);
+		    vector<string>ans = permutation("", S);
 		    sort(ans.begin(), ans.end());
 		    return ans;
 		}
