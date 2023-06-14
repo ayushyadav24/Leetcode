@@ -12,49 +12,15 @@ public:
     
     bool subsetSum(int arr[], int n, long long sum)
     {
-        // creation of dp matrix
-        int dp[n+1][sum+1];
-        if(n==0)
-            return false;
-        if(sum==0)
+        if(sum == 0)
             return true;
+        if(n==0 && sum !=0)
+            return false;
+            
+        if(arr[n-1] > sum)
+            return subsetSum(arr, n-1, sum);
         
-        // iniatialisation of dp
-        for(int i=0; i<n+1; i++)
-        {
-            for(int j=0; j<sum+1; j++)
-            {
-                if(i == 0 && j == 0)
-                {
-                    dp[i][j] = true;
-                }
-                if(i == 0)
-                {
-                    dp[i][j] = false;
-                }
-                if(j == 0)
-                {
-                    dp[i][j] = true;
-                }
-            }
-        }
-        
-        for(int i=1; i<n+1; i++)
-        {
-            for(int j=1; j<sum+1; j++)
-            {
-                if(arr[i-1] <= j)
-                {
-                    // pick or not pick
-                    dp[i][j] = dp[i-1][j - arr[i-1]] || dp[i-1][j];
-                }
-                else
-                {
-                    dp[i][j] = dp[i-1][j];
-                }
-            }
-        }
-        return dp[n][sum];
+        return subsetSum(arr, n-1, sum - arr[n-1]) || subsetSum(arr, n-1, sum);
     }
     int equalPartition(int N, int arr[])
     {
