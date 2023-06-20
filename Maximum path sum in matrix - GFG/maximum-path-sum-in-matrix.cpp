@@ -11,11 +11,12 @@ class Solution{
 public:
     int maximumPath(int n, vector<vector<int>> arr)
     {
-        vector<vector<int>>dp(n, vector<int>(n, 0));
+        vector<int>prev(n, 0);
+        vector<int>curr(n, 0);
         // initialisation
         for(int j=0; j<n; j++)
         {
-            dp[0][j] = arr[0][j];
+            prev[j] = arr[0][j];
         }
         
         for(int i=1; i<n; i++)
@@ -23,25 +24,26 @@ public:
             for(int j=0; j<n; j++)
             {
                 int ld, rd;
-                int s = arr[i][j] + dp[i-1][j];
+                int s = arr[i][j] + prev[j];
                 ld = arr[i][j];
                 if(j-1>=0)
-                    ld += dp[i-1][j-1];
+                    ld += prev[j-1];
                 else
                     ld += -1e9;
                 rd = arr[i][j];
                 if(j+1 < n)
-                    rd += dp[i-1][j+1];
+                    rd += prev[j+1];
                 else
                     rd += -1e9;
-                dp[i][j] = max(s, max(ld, rd));
+                curr[j] = max(s, max(ld, rd));
             }
+            prev = curr;
         }
         
-        int maxi = dp[n-1][0];
-        for(int j=1; j<n; j++)
+        int maxi = INT_MIN;
+        for(int j=0; j<n; j++)
         {
-            maxi = max(maxi, dp[n-1][j]);
+            maxi = max(maxi, prev[j]);
         }
         return maxi;
     }
