@@ -8,36 +8,30 @@ class Solution {
   public:
     int leastInterval(int N, int k, vector<char> &tasks) {
         // code here
-    int counter[26] = {0};
-    int maxF = 0; // max_freq
-    int maxFc = 0; // no of ch having max_freq
-    
-    for (int i = 0; i < N; i++) {
-        counter[tasks[i] - 'A']++;
-    }
-    
-    for (int x : counter) {
-        if (maxF == x) {
-            maxFc++;
+        int arr[26]={0};
+        int maxF = 0; // maximum no of frquency
+        int maxFc = 0; // maximum no of characters with max frequency
+        for(char task : tasks)
+        {
+            arr[task - 'A']++;
         }
-        if (maxF < x) {
-            maxF = x;
-            maxFc = 1;
+        for(int x : arr)
+        {
+            if(maxF == x)
+                maxFc++;
+            if(maxF < x)
+            {
+                maxF = x;
+                maxFc = 1;
+            }
         }
-    }
-    
-    int gaps = maxF - 1; // number of gaps required
-    
-    int gaps_len = k - (maxFc - 1); // number of ch that can be fit in partition gaps
-    
-    int avail_slot = gaps * gaps_len; // empty slots = number of gaps * gaps_len
-    
-    int avail_task = N - maxF * maxFc;
-    
-    int idles = max(0, avail_slot - avail_task); // place available tasks in total available
-    // slots and rest as idle
-    
-    return N + idles;
+        
+        int gaps = maxF - 1;
+        int gap_len = k - (maxFc - 1);
+        int avail_slot = gaps * gap_len;
+        int avail_task = N - maxF * maxFc;
+        int idle = max(0, avail_slot-avail_task);
+        return N+idle;
     }
 };
 
