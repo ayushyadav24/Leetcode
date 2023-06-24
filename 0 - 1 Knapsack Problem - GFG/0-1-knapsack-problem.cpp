@@ -8,40 +8,39 @@ class Solution
 {
     public:
     //Function to return max value that can be put in knapsack of capacity W.
+    int func(int ind, int wt[], int val[], int W, vector<vector<int>> &dp)
+    {
+        // base case
+        if(ind==0)
+        {
+            if(W >= wt[0])
+            {
+                return val[0];
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        
+        if(dp[ind][W] != -1)
+            return dp[ind][W];
+        
+        // two option pick not pick
+        int notPick = 0 + func(ind-1, wt, val, W, dp);
+        int pick = INT_MIN;
+        if(W >= wt[ind])
+        {
+            pick = val[ind] + func(ind-1, wt, val, W-wt[ind], dp);
+        }
+        
+        return dp[ind][W] = max(notPick, pick);
+        
+    }
     int knapSack(int W, int wt[], int val[], int n) 
     { 
-       int dp[n+1][W+1];
-       
-       // initialise matrix i.e converting base condition to initialisation
-       for(int i=0; i<n+1; i++)
-       {
-           for(int j=0; j<W+1; j++)
-           {
-               if(i==0 || j==0)
-               {
-                   dp[i][j] = 0;
-               }
-           }
-       }
-       
-       // filling the matrix
-       // i -> n
-       // j -> W
-       for(int i=1; i<n+1; i++)
-       {
-           for(int j=1; j<W+1; j++)
-           {
-               if(wt[i-1] <= j)
-               {
-                   dp[i][j] = max(val[i-1] + dp[i-1][j - wt[i-1]], dp[i-1][j]);
-               }
-               else
-               {
-                   dp[i][j] = dp[i-1][j];
-               }
-           }
-       }
-       return dp[n][W];
+       vector<vector<int>>dp(n, vector<int>(W+1, -1));
+       return func(n-1, wt, val, W, dp);
     }
 };
 
