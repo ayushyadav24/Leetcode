@@ -11,12 +11,7 @@ class Solution{
         vector<int>prev(m+1, 0);
         vector<int>curr(m+1, 0);
         // initialisation
-        for(int j=0; j<=m; j++)
-        {
-            prev[j] = 0;
-        }
         int ans = 0;
-        
         // explore all paths and recurrence
         for(int i=1; i<=n; i++)
         {
