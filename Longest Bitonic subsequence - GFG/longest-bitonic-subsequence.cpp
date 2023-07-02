@@ -7,6 +7,7 @@ class Solution{
 	public:
 	int LongestBitonicSequence(vector<int>nums)
 	{
+	    int maxi = 0;
 	    int n = nums.size();
 	    vector<int>dp1(n, 1);
 	    for(int i=0; i<n; i++)
@@ -33,11 +34,6 @@ class Solution{
 	                dp2[i] = 1 + dp2[prev];
 	            }
 	        }
-	    }
-	    
-	    int maxi = 0;
-	    for(int i=0; i<n; i++)
-	    {
 	        maxi = max(maxi, dp1[i] + dp2[i] - 1);
 	    }
 	    return maxi;
