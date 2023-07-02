@@ -13,11 +13,13 @@ class Solution
     {
        vector<int>temp;
        temp.push_back(a[0]);
+       int len = 1;
        for(int i=1; i<n; i++)
        {
            if(a[i] > temp.back())
            {
                temp.push_back(a[i]);
+               len++;
            }
            else
            {
@@ -25,7 +27,7 @@ class Solution
                temp[ind] = a[i];
            }
        }
-       return temp.size();
+       return len;
     }
 };
 
