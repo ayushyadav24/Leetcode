@@ -5,25 +5,18 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
 private:
-    bool check(int start, int color[], int V, vector<int> adj[])
+    bool dfs(int node, int clr, int color[], vector<int> adj[])
     {
-        queue<int>q;
-        q.push(start);
-        color[start] = 0;
-        while(!q.empty())
+        color[node] = clr;
+        for(auto it : adj[node])
         {
-            int node = q.front();
-            q.pop();
-            for(auto it : adj[node])
+            if(color[it] == -1)
             {
-                if(color[it] == -1)
-                {
-                    color[it] = !color[node];
-                    q.push(it);
-                }
-                else if(color[it] == color[node])
+                if(dfs(it, !clr, color, adj) == false)
                     return false;
             }
+            else if(color[it] == clr)
+                return false;
         }
         return true;
     }
@@ -39,7 +32,7 @@ public:
 	        // for not visited
 	        if(color[i] == -1)
 	        {
-	            if(check(i, color, V, adj) == false)
+	            if(dfs(i, 0, color, adj) == false)
 	                return false;   
 	        }
 	    }
