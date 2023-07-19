@@ -9,55 +9,44 @@ using namespace std;
 // User function Template for C++
 
 class Solution {
-  private:
-    bool checkdfs(int node, int vis[], int pathvis[], vector<int>adj[], int check[])
-    {
-        vis[node] = 1;
-        pathvis[node] = 1;
-        check[node] = 0;
-        for(auto it : adj[node])
-        {
-            if(!vis[it])
-            {
-                if(checkdfs(it, vis, pathvis, adj, check) == true)
-                {
-                    check[node] = 0;
-                    return true;
-                }
-            }
-            else if(pathvis[it] == 1)
-            {
-                check[node] = 0;
-                return true;
-            }
-        }
-        check[node] = 1;
-        pathvis[node] = 0;
-        return false;
-    }
   public:
     vector<int> eventualSafeNodes(int V, vector<int> adj[]) {
-        int vis[V] = {0};
-        int pathvis[V] = {0};
-        int check[V] = {0}; // marking safe nddes
-        vector<int>safenodes;
+        
+        vector<int>adjRev[V];
+        int indegree[V] = {0};
+         for(int i=0; i<V; i++)
+        {
+            for(auto it : adj[i])
+            {
+                adjRev[it].push_back(i);
+                indegree[i]++;
+            }
+        }
+
+        // kahns algo for topo sort
+        queue<int>q;
+        vector<int>topo;
         for(int i=0; i<V; i++)
         {
-            if(!vis[i])
+            if(indegree[i] == 0)
+                q.push(i);
+        }
+
+        while(!q.empty())
+        {
+            int node = q.front();
+            topo.push_back(node);
+            q.pop();
+            for(auto it : adjRev[node])
             {
-                checkdfs(i, vis, pathvis, adj, check);
+                indegree[it]--;
+                if(indegree[it] == 0)
+                    q.push(it);
             }
         }
         
-        // checking for safe nodes and pushing them in answer
-        for(int i=0; i<V; i++)
-        {
-            if(check[i] == 1)
-            {
-                safenodes.push_back(i);
-            }
-        }
-        return safenodes;
+        sort(topo.begin(), topo.end());
+        return topo;
     }
 };
 
