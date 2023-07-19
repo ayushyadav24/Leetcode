@@ -19,10 +19,10 @@ class Solution
            mp[S[i]]++;
        }
        
-       for(char ch : S)
+       for(auto i = S.begin(); i != S.end(); i++)
        {
-           if(mp[ch] == 1)
-                return ch;
+           if(mp[*i] == 1)
+                return *i;
        }
        
        return '$';
