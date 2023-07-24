@@ -129,23 +129,23 @@ struct Node
 
 //Function to return a list containing elements of left view of the binary tree.
 
-void recursion(Node* node, int level, vector<int>&ans)
-{
-    if(node == NULL)
-        return;
-        
-    if(ans.size() == level)
+void helper(Node* node, vector<int> &res, int lvl)
     {
-        ans.push_back(node -> data);
+        if(node == NULL)
+            return;
+            
+        if(res.size() == lvl)
+            res.push_back(node -> data);
+        
+        helper(node -> left, res, lvl+1);
+        
+        helper(node -> right, res, lvl+1);
     }
-    
-    recursion(node -> left, level+1, ans);
-    recursion(node -> right, level+1, ans);
-}
 
 vector<int> leftView(Node *root)
 {
-   vector<int>ans;
-   recursion(root, 0, ans);
-   return ans;
+   // Your code here
+       vector<int>res;
+       helper(root, res, 0);
+       return res;
 }
