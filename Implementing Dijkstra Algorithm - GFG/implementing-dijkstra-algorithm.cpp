@@ -11,7 +11,8 @@ class Solution
     vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
     {
         // declaring min heap
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        // priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        queue<pair<int, int>>pq;
         pq.push({0, S}); // dist, src
         // declaring distance array
         vector<int>dist(V);
@@ -22,8 +23,8 @@ class Solution
         dist[S] = 0;
         while(!pq.empty())
         {
-            int dis = pq.top().first;
-            int node = pq.top().second;
+            int dis = pq.front().first;
+            int node = pq.front().second;
             pq.pop();
             
             for(auto it : adj[node])
