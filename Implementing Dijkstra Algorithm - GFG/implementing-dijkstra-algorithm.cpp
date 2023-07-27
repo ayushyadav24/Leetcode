@@ -10,32 +10,32 @@ class Solution
     //from the source vertex S.
     vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
     {
-        // declaring min heap
-        // priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-        queue<pair<int, int>>pq;
-        pq.push({0, S}); // dist, src
-        // declaring distance array
-        vector<int>dist(V);
-        for(int i=0; i<V; i++)
-        {
-            dist[i] = 1e9;
-        }
+        // Code here
+        set<pair<int, int>>st;
+        st.insert({0, S});
+        
+        vector<int>dist(V, 1e9);
         dist[S] = 0;
-        while(!pq.empty())
+        
+        while(!st.empty())
         {
-            int dis = pq.front().first;
-            int node = pq.front().second;
-            pq.pop();
+            auto it = *(st.begin());
+            int dis = it.first;
+            int node = it.second;
+            st.erase(it);
             
             for(auto it : adj[node])
             {
-                int edgeWeight = it[1];
+                int edgwt = it[1];
                 int adjNode = it[0];
                 
-                if(dis + edgeWeight < dist[adjNode])
+                if(dis + edgwt < dist[adjNode])
                 {
-                    dist[adjNode] = dis + edgeWeight;
-                    pq.push({dist[adjNode], adjNode});
+                    if(dist[adjNode] != 1e9)
+                        st.erase({dist[adjNode], adjNode});
+                        
+                    dist[adjNode] = dis + edgwt;
+                    st.insert({dist[adjNode], adjNode});
                 }
             }
         }
