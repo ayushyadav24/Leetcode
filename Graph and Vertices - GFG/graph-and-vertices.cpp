@@ -9,8 +9,9 @@ class Solution {
   public:
     long long count(int n) {
         // your code here
-        long long temp = (n*(n-1))/2;
-        return pow(2, temp);
+        long long power = (n*(n-1))/2;
+        long long ans = pow(2, power);
+        return ans;
     }
 };
 
