@@ -3,41 +3,116 @@
 using namespace std;
 
 // } Driver Code Ends
+
+class DisjointSet
+{
+    // two vectors i.e for rank and parent
+    vector<int> rank;
+    vector<int> parent;
+    vector<int> size;
+    // creating a constructor
+public:
+    DisjointSet(int n)
+    {
+        rank.resize(n + 1, 0);
+        parent.resize(n + 1);
+        size.resize(n+1);
+        for (int i = 0; i <= n; i++)
+        {
+            parent[i] = i;
+        }
+    };
+
+    // finding ultimate parent
+    int findUparent(int node)
+    {
+        if (node == parent[node])
+            return node;
+
+        return parent[node] = findUparent(parent[node]);
+    }
+
+    // find rank
+    void UnionbyRank(int u, int v)
+    {
+        int up_u = findUparent(u);
+        int up_v = findUparent(v);
+        if (up_u == up_v)
+            return;
+
+        if (rank[up_u] < rank[up_v])
+            parent[up_u] = up_v;
+
+        else if (rank[up_v] < rank[up_u])
+            parent[up_v] = up_u;
+
+        else
+        {
+            parent[up_v] = up_u;
+            rank[up_u]++;
+        }
+    }
+
+    void UnionbySize(int u, int v)
+    {
+        int up_u = findUparent(u);
+        int up_v = findUparent(v);
+        if(up_u == up_v)
+            return;
+
+        if(size[up_u] < size[up_v])
+        {
+            parent[up_u] = up_v;
+            size[up_v] += size[up_u];
+        }
+        else
+        {
+            parent[up_v] = up_u;
+            size[up_u] += size[up_v];
+        }
+    }
+
+};
+
 class Solution
 {
 	public:
 	//Function to find sum of weights of edges of the Minimum Spanning Tree.
     int spanningTree(int V, vector<vector<int>> adj[])
     {
-        // min heap
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>pq;
-        // wt , node
-        // vis array
-        vector<int>vis(V, 0);
-        pq.push({0, 0});
-        int sum = 0;
-        while(!pq.empty())
+        vector<pair<int, pair<int, int>>>edges;
+        for(int i=0; i<V; i++)
         {
-            auto it = pq.top();
-            pq.pop();
-            int node = it.second;
-            int wt = it.first;
-            if(vis[node] == 1)
-                continue;
-            
-            vis[node] = 1;
-            sum += wt; 
-            for(auto itr : adj[node])
+            for(auto it : adj[i])
             {
-                int adjnode = itr[0];
-                int adjwt = itr[1];
-                if(!vis[adjnode])
-                {
-                    pq.push({adjwt, adjnode});
-                }
+                int adjnode = it[0];
+                int wt = it[1];
+                int node = i;
+                
+                edges.push_back({wt, {node, adjnode}});
             }
         }
-        return sum;
+        
+        sort(edges.begin(), edges.end());
+        
+        int mstWt = 0;
+        DisjointSet ds(V);
+        
+        for(auto it : edges)
+        {
+            int wt = it.first;
+            int u = it.second.first;
+            int v = it.second.second;
+            
+            // belong to same component than we don;t add weight else we do i.e different case
+            if(ds.findUparent(u) != ds.findUparent(v))
+            {
+                mstWt += wt;
+                ds.UnionbySize(u, v);
+            }
+        }
+        
+        return mstWt;
     }
 };
 
