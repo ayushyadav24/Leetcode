@@ -30,7 +30,21 @@ class Solution {
     int minimizeCost(vector<int>& height, int n, int k) {
         // Code here
         vector<int>dp(n+1, 0);
-        return utility(n-1, k, height, dp);
+        dp[0] = 0;
+        for(int i=1; i<=n; i++)
+         {
+            int minStep = INT_MAX;
+            for(int j=1; j<=k; j++)
+            {
+                if(i-j >= 0)
+                {
+                    int jumps = dp[i-j] + abs(height[i]-height[i-j]);
+                    minStep = min(minStep, jumps);
+                }
+            }
+            dp[i] = minStep;
+        }
+        return dp[n-1];
     }
 };
 
