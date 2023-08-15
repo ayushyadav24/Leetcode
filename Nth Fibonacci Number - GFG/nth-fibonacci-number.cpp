@@ -5,36 +5,26 @@ using namespace std;
 
 // } Driver Code Ends
 // User function Template for C++
-
 class Solution {
+  private:
+    int utility(int n, vector<int> &dp)
+    {
+        int mod = 1e9+7;
+        if(n < 2)
+            return n;
+        
+        if(dp[n] != -1)
+            return dp[n];
+        
+        return dp[n] = (utility(n-1, dp)%mod+utility(n-2, dp)%mod)%mod;
+    }
   public:
-    int mod = 1e9+7;
-    // int utility(int n, vector<int> &dp)
-    // {
-    //      if(n==0 || n==1)
-    //         return n;
-        
-    //     if(dp[n] != -1)
-    //         return dp[n];
-        
-    //     dp[n] = (utility(n-1, dp)%mod + utility(n-2, dp)%mod)%mod;
-        
-    //     return dp[n];
-    // }
     int nthFibonacci(int n){
         // code here
-        long long prev2 = 0;
-        long long prev1 = 1;
-        for(int i=2; i<=n; i++)
-        {
-            long long curr = (prev1%mod + prev2%mod)%mod;
-            prev2 = prev1;
-            prev1 = curr;
-        }
-        return prev1;
+        vector<int>dp(n+1, -1);
+        return utility(n, dp);
     }
 };
-
 
 //{ Driver Code Starts.
 int main() {
