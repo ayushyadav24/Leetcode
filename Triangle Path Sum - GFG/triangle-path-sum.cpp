@@ -25,24 +25,27 @@ class Solution {
     }
     int minimizeSum(int n, vector<vector<int>>& triangle) {
         // Code here
-        vector<vector<int>>dp(n, vector<int>(n, 0));
+        // vector<vector<int>>dp(n, vector<int>(n, 0));
+        vector<int>next(n, 0);
         // initialise
         for(int j=0; j<n; j++)
         {
-            dp[n-1][j] = triangle[n-1][j];
+            next[j] = triangle[n-1][j];
         }
         
         for(int i=n-2; i>=0; i--)
         {
+            vector<int>curr(n, 0);
             for(int j=n-2; j>=0; j--)
             {
-                int down = triangle[i][j] + dp[i+1][j];
-                int dia = triangle[i][j] + dp[i+1][j+1];
-                dp[i][j] = min(down, dia);
+                int down = triangle[i][j] + next[j];
+                int dia = triangle[i][j] + next[j+1];
+                curr[j] = min(down, dia);
             }
+            next = curr;
         }
         
-        return dp[0][0];
+        return next[0];
     }
 };
 
